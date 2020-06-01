@@ -2,7 +2,6 @@
 const botconfig = require("./botconfig.json");
 const tokenfile = require("./token.json");
 const Discord = require("discord.js");
-const mysql = require("mysql");
 const ping = require("minecraft-server-util")
 const fs = require("fs");
 const bot = new Discord.Client({disableEveryone: true});
@@ -35,103 +34,7 @@ bot.on("ready", async () => {
 	bot.user.setActivity("over Ham5teak", {type: "WATCHING"});
 })
 
-//Check for players adding reaction to selected message
-bot.on('raw', event => {
-const eventName = event.t;
-	if(eventName == 'MESSAGE_REACTION_ADD') {
-        if(event.d.message_id === '689427786754293761') {
-            var reactionChannel = bot.channels.get(event.d.channel_id);
-            if(reactionChannel.messages.has(event.d.message_id)) {
-                return;
-            }else {
-                reactionChannel.fetchMessage(event.d.message_id)
-                .then(msg => {
-                    var msgReaction = msg.reactions.get(event.d.emoji.name + ":" + event.d.emoji.id);
-                    var user = bot.users.get(event.d.user_id);
-                    bot.emit('messagedReactionAdd', msgReaction, user);
-                })
-                .catch(err => console.log(err));
-            }
-        }
-    }
- 
-//Check for players remove reaction to selected message
-	else if(eventName == 'MESSAGE_REACTION_REMOVE') {
-        if(event.d.message_id === '689427786754293761') {
-            var reactionChannel = bot.channels.get(event.d.channel_id);
-            if(reactionChannel.messages.has(event.d.message_id)) {
-                return;
-            }
-            else {
-                reactionChannel.fetchMessage(event.d.message_id)
-                .then(msg => {
-                    var msgReaction = msg.reactions.get(event.d.emoji.name + ":" + event.d.emoji.id);
-                    var user = bot.users.get(event.d.user_id);
-                    bot.emit('messagedReactionRemove', msgReaction, user);
-                })
-                .catch(err => console.log(err));
- 
-            }
-        }
-    }
-});
- 
-//If they reacted to a correct emoji, they will be given a respective role.
-bot.on('messageReactionAdd', (messageReaction, user) => {
-    var rolename = messageReaction.emoji.name;
-    var role = messageReaction.message.guild.roles.find(role => role.name.toLowerCase() == rolename.toLowerCase());
- 
-    if(role){
-        var member = messageReaction.message.guild.members.find(member => member.id === user.id);
-        if(member.roles.some(role => role.name === 'SVWarrior')) {
-            return;
-        }
-        if(member.roles.some(role => role.name === 'SBWarrior')) {
-            return;
-        }
- 
-//If the role has been sucessfully added to them, their data gets inserted into a database.
-    if(member){
-        member.addRole(role.id);
-        console.log('Succesfully added the role.');
-        var sql = "SELECT * FROM `playerdata` WHERE playerid=" + "'" + member  + "'" + "";
-        connection.query(sql);
-    if(sql){
-        var sql1 = "INSERT INTO `hambot`.`playerdata` (`playerid`, `rolename`) VALUES(" + "'" + member  + "'" + "," + "'" + rolename + "'" + ")";
-        connection.query(sql1);
-        if(sql1) {
-        	console.log("Recorded player data.");
-        }
-    }
-    else {
-       	console.log("Failed to record player data. Player data already exists.")
-        }
-    }
-	}
-});
- 
-//When the player removes his reaction, his role gets remove, hence remove the data from database.
-bot.on('messageReactionRemove', (messageReaction, user) =>{
-    var rolename = messageReaction.emoji.name;
-    var role = messageReaction.message.guild.roles.find(role => role.name.toLowerCase() == rolename.toLowerCase());
- 
-    if(role){
-        var member = messageReaction.message.guild.members.find(member => member.id === user.id);
-        if(member){
-            member.removeRole(role.id);
-            console.log('Succesfully removed the role.')
-            var sql = "delete FROM `hambot`.`playerdata` WHERE playerid=" + "'" + member  + "'" + "";
-            connection.query(sql);
-            if(sql) {
-            	console.log("Deleted player data.");
-        	}
-        }
-    }
-});
-
-
 bot.on("message", async message => {
-
 //Checks for if the channel name in lower case includes "announcements" OR "updates"
 if (message.channel.name.includes("announcements") || message.channel.name.includes("updates")) {
     let user = message.author;
@@ -1067,15 +970,5 @@ if(message.content === ("7") && message.channel.topic.startsWith("TICKET")) {
   let commandfile = bot.commands.get(cmd.slice(prefix.length));
   if(commandfile) commandfile.run(bot,message,args);
  
-const mysql = require('mysql');
-const connection = mysql.createConnection({
-    host     : '139.99.125.125',
-  port     : '3306',
-  user     : 'jaymz',
-  password : 'vax95zjjwnChhUNR',
-  database : 'hambot',
-});
-
 })
-
 bot.login(tokenfile.token);
