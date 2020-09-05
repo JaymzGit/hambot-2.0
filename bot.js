@@ -36,7 +36,9 @@ bot.on("ready", async () => {
 
 bot.on("message", async message => {
 //Checks for if the channel name in lower case includes "announcements" OR "updates"
-if (message.channel.name.includes("announcements") || message.channel.name.includes("updates")) {
+if (message.channel.name.includes("announcements") || message.channel.name.includes("updates") || 
+	message.channel.name.includes("events") || message.channel.name.includes("competitions") ||
+	message.channel.name.includes("staff-applications")){
     let user = message.author;
     let role = message.author.role;
     let channel = message.channel.name;
@@ -58,7 +60,7 @@ if (message.channel.name.includes("announcements") || message.channel.name.inclu
                 console.log(`\nAn image-inclusive announcement was made in #${channel}`)  
         		await sentEmbed.react('👍');
         		await sentEmbed.react('❤️');
-            } else {
+            }else if(message.attachments.size < 1) {
                 //Does the same thing but if message doesn't include picture/GIF
                 const name = message.member.displayName;
                 const embed = new Discord.RichEmbed()
