@@ -1,6 +1,5 @@
 //Import all libraries or dependecies
 const botconfig = require("./botconfig.json");
-const tokenfile = require("./token.json");
 const Discord = require("discord.js");
 const ping = require("minecraft-server-util")
 const fs = require("fs");
@@ -973,4 +972,4 @@ if(message.content === ("7") && message.channel.topic.startsWith("TICKET")) {
   if(commandfile) commandfile.run(bot,message,args);
  
 })
-bot.login(tokenfile.token);
+bot.login();
