@@ -107,15 +107,11 @@ if (message.channel.name.toLowerCase().includes('polls')|| message.channel.name.
 if (message.content.includes("op")) {
 if (message.channel.name.includes("console")){ 
     if (message.content.includes("a server operator")) {
-    	//Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 689768738890973213
-        const staff = '701520308976353421';
-        const alerts = '701629915296170046';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "a server operator";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(staff).send(`**WARNING!** \`/op\` or \`/deop\` was used. Check \<#701629915296170046>\ for more info`);
+        bot.channels.get(staff).send(`**WARNING!** \`/op\` or \`/deop\` was used.`);
         message.delete(200);
         bot.channels.get(alerts).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
     }
@@ -124,13 +120,10 @@ if (message.channel.name.includes("console")){
 
 if (message.channel.name.includes("console-creative")) {
 if (message.content.includes("[HamAlerts] Thank you")) {
-    //Channel ID for receipts = 701630463823052810
-    const receipts = '701630463823052810';
     let channel = message.channel.name;
     var messageSplitted = message.content.split("\n");  
     var substring = "[HamAlerts]";
     filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-    //console.log(filtered)
     bot.channels.get(receipts).send(`\`\`\`${filtered}\`\`\``);
     }
 }
@@ -138,10 +131,6 @@ if (message.content.includes("[HamAlerts] Thank you")) {
 if (message.channel.name.includes("console-lobby")) {
 if (message.content.includes("[LP] Set * to true for ")) {
     if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for lp = 701630251666767952
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = " [LP]";
@@ -154,8 +143,6 @@ if (message.content.includes("[LP] Set * to true for ")) {
 if (message.channel.name.includes("console-survival")) {
 if (message.content.includes("[LP] Set * to true for ")) {
     if(message.content.includes("[Messaging] Sending log with id:")){
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = " [LP]";
@@ -168,8 +155,6 @@ if (message.content.includes("[LP] Set * to true for ")) {
 if (message.channel.name.includes("console-svsurvival")) {
 if (message.content.includes("[LP] Set * to true for ")) {
     if(message.content.includes("[Messaging] Sending log with id:")){
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = " [LP]";
@@ -182,8 +167,6 @@ if (message.content.includes("[LP] Set * to true for ")) {
 if (message.channel.name.includes("console-prison")) {
 if (message.content.includes("[LP] Set * to true for ")) {
     if(message.content.includes("[Messaging] Sending log with id:")){
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = " [LP]";
@@ -210,8 +193,6 @@ if (message.content.includes("[LP] Set * to true for  ")) {
 if (message.channel.name.includes("console-skyblocks")) {
 if (message.content.includes("[LP] Set * to true for ")) {
     if(message.content.includes("[Messaging] Sending log with id:")){
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = " [LP]";
@@ -224,8 +205,6 @@ if (message.content.includes("[LP] Set * to true for ")) {
 if (message.channel.name.includes("console-creative")) {
 if (message.content.includes("[LP] Set * to true for ")) {
     if(message.content.includes("[Messaging] Sending log with id:")){
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = " [LP]";
@@ -238,8 +217,6 @@ if (message.content.includes("[LP] Set * to true for ")) {
 if (message.channel.name.includes("console-minigames")) {
 if (message.content.includes("[LP] Set * to true for ")) {
     if(message.content.includes("[Messaging] Sending log with id:")){
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = " [LP]";
@@ -249,7 +226,6 @@ if (message.content.includes("[LP] Set * to true for ")) {
 }
 }
 
-
 //Guarantees no duplicate of message because it will only be from console-lobby
 if (message.channel.name.includes("console-lobby")) {
     if (message.content.includes("now inherits permissions from")) {
@@ -257,10 +233,6 @@ if (message.channel.name.includes("console-lobby")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "now inherits permissions from";
@@ -277,10 +249,6 @@ if (message.channel.name.includes("console-survival")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "now inherits permissions from";
@@ -297,10 +265,6 @@ if (message.channel.name.includes("console-svsurvival")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "now inherits permissions from";
@@ -317,10 +281,6 @@ if (message.channel.name.includes("console-prison")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "now inherits permissions from";
@@ -337,10 +297,6 @@ if (message.channel.name.includes("console-factions")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "now inherits permissions from";
@@ -356,10 +312,6 @@ if (message.channel.name.includes("console-skyblocks")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "now inherits permissions from";
@@ -375,10 +327,6 @@ if (message.channel.name.includes("console-creative")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "now inherits permissions from";
@@ -394,10 +342,6 @@ if (message.channel.name.includes("console-minigames")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "now inherits permissions from";
@@ -414,10 +358,6 @@ if (message.channel.name.includes("console-lobby")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "no longer inherits permissions from";
@@ -433,10 +373,6 @@ if (message.channel.name.includes("console-survival")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "no longer inherits permissions from";
@@ -452,10 +388,6 @@ if (message.channel.name.includes("console-svsurvival")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "no longer inherits permissions from";
@@ -471,10 +403,6 @@ if (message.channel.name.includes("console-prison")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "no longer inherits permissions from";
@@ -490,10 +418,6 @@ if (message.channel.name.includes("console-factions")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "no longer inherits permissions from";
@@ -509,10 +433,6 @@ if (message.channel.name.includes("console-skyblocks")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "no longer inherits permissions from";
@@ -528,10 +448,6 @@ if (message.channel.name.includes("console-creative")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "no longer inherits permissions from";
@@ -547,10 +463,6 @@ if (message.channel.name.includes("console-minigames")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "no longer inherits permissions from";
@@ -563,10 +475,6 @@ if (message.channel.name.includes("console-minigames")) {
 if (message.channel.name.includes("console-lobby")) {   
     if (message.content.includes("[LP] Demoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046        
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Demoting";
@@ -579,10 +487,6 @@ if (message.channel.name.includes("console-lobby")) {
 if (message.channel.name.includes("console-survival")) {   
     if (message.content.includes("[LP] Demoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046        
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Demoting";
@@ -595,10 +499,6 @@ if (message.channel.name.includes("console-survival")) {
 if (message.channel.name.includes("console-svsurvival")) {   
     if (message.content.includes("[LP] Demoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046        
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Demoting";
@@ -611,10 +511,6 @@ if (message.channel.name.includes("console-svsurvival")) {
 if (message.channel.name.includes("console-prison")) {   
     if (message.content.includes("[LP] Demoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046        
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Demoting";
@@ -627,10 +523,6 @@ if (message.channel.name.includes("console-prison")) {
 if (message.channel.name.includes("console-skyblocks")) {   
     if (message.content.includes("[LP] Demoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046        
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Demoting";
@@ -643,10 +535,6 @@ if (message.channel.name.includes("console-skyblocks")) {
 if (message.channel.name.includes("console-creative")) {   
     if (message.content.includes("[LP] Demoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046        
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Demoting";
@@ -659,10 +547,6 @@ if (message.channel.name.includes("console-creative")) {
 if (message.channel.name.includes("console-minigames")) {   
     if (message.content.includes("[LP] Demoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046        
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Demoting";
@@ -676,10 +560,6 @@ if (message.channel.name.includes("console-minigames")) {
 if (message.channel.name.includes("console-lobby")) {
     if (message.content.includes("[LP] Promoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Promoting";
@@ -692,10 +572,6 @@ if (message.channel.name.includes("console-lobby")) {
 if (message.channel.name.includes("console-survival")) {
     if (message.content.includes("[LP] Promoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Promoting";
@@ -708,10 +584,6 @@ if (message.channel.name.includes("console-survival")) {
 if (message.channel.name.includes("console-svsurvival")) {
     if (message.content.includes("[LP] Promoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Promoting";
@@ -724,10 +596,6 @@ if (message.channel.name.includes("console-svsurvival")) {
 if (message.channel.name.includes("console-prison")) {
     if (message.content.includes("[LP] Promoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Promoting";
@@ -740,10 +608,6 @@ if (message.channel.name.includes("console-prison")) {
 if (message.channel.name.includes("console-factions")) {
     if (message.content.includes("[LP] Promoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Promoting";
@@ -756,10 +620,6 @@ if (message.channel.name.includes("console-factions")) {
 if (message.channel.name.includes("console-skyblocks")) {
     if (message.content.includes("[LP] Promoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Promoting";
@@ -772,10 +632,6 @@ if (message.channel.name.includes("console-skyblocks")) {
 if (message.channel.name.includes("console-creative")) {
     if (message.content.includes("[LP] Promoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Promoting";
@@ -788,10 +644,6 @@ if (message.channel.name.includes("console-creative")) {
 if (message.channel.name.includes("console-minigames")) {
     if (message.content.includes("[LP] Promoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
-        //Channel ID for staff = 701520308976353421
-        //Channel ID for alerts = 701629915296170046     
-        const staff = '701520308976353421';
-        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Promoting";
@@ -800,37 +652,8 @@ if (message.channel.name.includes("console-minigames")) {
     }
 }
 }
-
-// if(message.content.includes("issued server command: /sudo") && message.content.includes("console")) {
-//   if (message.content.includes("Performed '/op' command as")) {
-//         var messageSplitted = message.content.split("\n");
-//         var substring = "Performed '/op' comamnd as";
-//         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-//         //Channel ID for staff = 701520308976353421
-//         //Channel ID for alerts = 701629915296170046
-//         const staff = '701520308976353421';
-//         const alerts = '701629915296170046';
-//         let channel = message.channel.name;
-//         bot.channels.get(staff).send(`**WARNING!** \`sudo\` command used for /op. Check \<#701629915296170046>\ for more info.`);
-//         bot.channels.get(alerts).send(`**WARNING!** \`sudo\` command used for /op. Message :\`\`\`${filtered}\`\`\`It originated from ${channel}!`);
-//     }
-// }
-
-// if (message.channel.name.includes("console")) {
-//     if (message.content.includes("[LP] Preparing a new editor session. Please wait...")) {
-//         //Channel ID for staff = 701520308976353421
-//         //Channel ID for alerts = 701629915296170046     
-//         const staff = '701520308976353421';
-//         const lp = '701630251666767952';
-//         let channel = message.channel.name;
-//         var messageSplitted = message.content.split("\n");
-//         var substring = " [LP] Preparing";
-//         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-//         bot.channels.get(lp).send(`**WARNING!** \`[LuckPerms] lp editor\` used. It originated from ${channel}!`);
-// }
-// }
  
-//Ham5teak Server Assistance
+//Ham5teak Server Assistance (Answers in tickets)
 for (var i = 0; i < message.embeds.length; i++) {
     if (message.embeds[i] && message.embeds[i].description && message.embeds[i].description.toLowerCase().includes("this user wants the service:")) {
     try {
@@ -848,7 +671,8 @@ for (var i = 0; i < message.embeds.length; i++) {
 }
 }
 
-    let user = message.author;
+let user = message.author;
+	
 if(!user.bot){
     if(message.content === ("1") && message.channel.topic.startsWith("TICKET")) {
         try {
