@@ -7,7 +7,7 @@ const fs = require("fs");
 const bot = new Discord.Client({disableEveryone: true});
 bot.commands = new Discord.Collection();
 
-const guildID = "789891385293537280";
+const guildID = "380308776114454528";
 
 //Check for any files in the commands folders (aka checking if the bot has the following commands or not)
 fs.readdir("./commands/", (err, files) => {
