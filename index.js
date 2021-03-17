@@ -1,10 +1,13 @@
 //Import all libraries or dependecies
 const botconfig = require("./botconfig.json");
+const tokenfile = require("./token.json");
 const Discord = require("discord.js");
 const ping = require("minecraft-server-util")
 const fs = require("fs");
 const bot = new Discord.Client({disableEveryone: true});
 bot.commands = new Discord.Collection();
+
+const guildID = "789891385293537280";
 
 //Check for any files in the commands folders (aka checking if the bot has the following commands or not)
 fs.readdir("./commands/", (err, files) => {
@@ -46,15 +49,18 @@ if (message.channel.name.includes("announcements") || message.channel.name.inclu
             const name = message.member.displayName;
             //If the message is bigger than size 0 (0 = message only) (>1 = message + GIF/picture)
             if (message.attachments.size > 0) {
-                var Attachment = (message.attachments).array();
-                const embed = new Discord.RichEmbed()
+                var Attachment = (message.attachments).array(); //can be handled in two ways, one being image kept out of the embed the other is this, sending the image in a storage and posting that in an embed. Make sure to have image-storage as a channel!
+                const storedimage = await message.guild.channels.cache.find(ch => ch.name === 'image-storage').send(Attachment[0]) //sends the image to storage channel
+                const embedimage = await (storedimage.attachments).array(); //gets the new image from storage channel
+                const [ { proxyURL } ] = await embedimage //converts the copied image to a url redirecting to storage
+                const embed = new Discord.MessageEmbed()
                 .setDescription(message.content)
-                .setAuthor(name, message.author.avatarURL)
-                .setImage(Attachment[0].url)
+                .setAuthor(name, message.author.avatarURL())
+                .setImage(proxyURL) //sends a link to the image in storage
                 .setFooter('Ham5teak Bot 2.0 | play.ham5teak.xyz | Made by Jaymz#7815')
                 .setColor('#00FFFF')
         		const sentEmbed = await message.channel.send(embed);
-                await message.delete(500);
+                await message.delete({ timeout: 1000 });
                 //Logs to console an announcement was made.
                 console.log(`\nAn image-inclusive announcement was made in #${channel}`)  
         		await sentEmbed.react('👍');
@@ -62,9 +68,9 @@ if (message.channel.name.includes("announcements") || message.channel.name.inclu
             }else if(message.attachments.size < 1) {
                 //Does the same thing but if message doesn't include picture/GIF
                 const name = message.member.displayName;
-                const embed = new Discord.RichEmbed()
+                const embed = new Discord.MessageEmbed()
                 .setDescription(message.content)
-                .setAuthor(name, message.author.avatarURL)
+                .setAuthor(name, message.author.avatarURL())
                 .setFooter('Ham5teak Bot 2.0 | play.ham5teak.xyz | Made by Jaymz#7815')
                 .setColor('#00FFFF')
         		const sentEmbed = await message.channel.send(embed);
@@ -88,9 +94,9 @@ if (message.channel.name.toLowerCase().includes('polls')|| message.channel.name.
     if (user.bot) return;
     try {
         const name = message.member.displayName;
-        const embed = new Discord.RichEmbed()
+        const embed = new Discord.MessageEmbed()
         .setDescription(message.content)
-        .setAuthor(name, message.author.avatarURL)
+        .setAuthor(name, message.author.avatarURL())
         .setFooter('Ham5teak Bot 2.0 | play.ham5teak.xyz | Made by Jaymz#7815')
         .setColor('#00FFFF')
  
@@ -107,35 +113,45 @@ if (message.channel.name.toLowerCase().includes('polls')|| message.channel.name.
 if (message.content.includes("op")) {
 if (message.channel.name.includes("console")){ 
     if (message.content.includes("a server operator")) {
+    	//Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 689768738890973213
+        const staff = '701520308976353421';
+        const alerts = '701629915296170046';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "a server operator";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(staff).send(`**WARNING!** \`/op\` or \`/deop\` was used.`);
-        message.delete(200);
-        bot.channels.get(alerts).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(staff).send(`**WARNING!** \`/op\` or \`/deop\` was used. Check \<#701629915296170046>\ for more info`);
+        bot.channels.cache.get(alerts).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
     }
 }
 }
 
 if (message.channel.name.includes("console-creative")) {
 if (message.content.includes("[HamAlerts] Thank you")) {
+    //Channel ID for receipts = 701630463823052810
+    const receipts = '701630463823052810';
     let channel = message.channel.name;
     var messageSplitted = message.content.split("\n");  
     var substring = "[HamAlerts]";
     filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-    bot.channels.get(receipts).send(`\`\`\`${filtered}\`\`\``);
+    //console.log(filtered)
+    bot.channels.cache.get(receipts).send(`\`\`\`${filtered}\`\`\``);
     }
 }
 
 if (message.channel.name.includes("console-lobby")) {
 if (message.content.includes("[LP] Set * to true for ")) {
     if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for lp = 701630251666767952
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = " [LP]";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-      	bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+      	bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
 	}
 }
 }
@@ -143,11 +159,13 @@ if (message.content.includes("[LP] Set * to true for ")) {
 if (message.channel.name.includes("console-survival")) {
 if (message.content.includes("[LP] Set * to true for ")) {
     if(message.content.includes("[Messaging] Sending log with id:")){
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = " [LP]";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-      	bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+      	bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
 	}
 }
 }
@@ -155,11 +173,13 @@ if (message.content.includes("[LP] Set * to true for ")) {
 if (message.channel.name.includes("console-svsurvival")) {
 if (message.content.includes("[LP] Set * to true for ")) {
     if(message.content.includes("[Messaging] Sending log with id:")){
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = " [LP]";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
 	}
 }
 }
@@ -167,11 +187,13 @@ if (message.content.includes("[LP] Set * to true for ")) {
 if (message.channel.name.includes("console-prison")) {
 if (message.content.includes("[LP] Set * to true for ")) {
     if(message.content.includes("[Messaging] Sending log with id:")){
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = " [LP]";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
 	}
 }
 }
@@ -185,7 +207,7 @@ if (message.content.includes("[LP] Set * to true for  ")) {
         var messageSplitted = message.content.split("\n");
         var substring = " [LP]";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
 	}
 }
 }
@@ -193,11 +215,13 @@ if (message.content.includes("[LP] Set * to true for  ")) {
 if (message.channel.name.includes("console-skyblocks")) {
 if (message.content.includes("[LP] Set * to true for ")) {
     if(message.content.includes("[Messaging] Sending log with id:")){
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = " [LP]";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
 	}
 }
 }
@@ -205,11 +229,13 @@ if (message.content.includes("[LP] Set * to true for ")) {
 if (message.channel.name.includes("console-creative")) {
 if (message.content.includes("[LP] Set * to true for ")) {
     if(message.content.includes("[Messaging] Sending log with id:")){
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = " [LP]";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
 	}
 }
 }
@@ -217,14 +243,17 @@ if (message.content.includes("[LP] Set * to true for ")) {
 if (message.channel.name.includes("console-minigames")) {
 if (message.content.includes("[LP] Set * to true for ")) {
     if(message.content.includes("[Messaging] Sending log with id:")){
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = " [LP]";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
 	}
 }
 }
+
 
 //Guarantees no duplicate of message because it will only be from console-lobby
 if (message.channel.name.includes("console-lobby")) {
@@ -233,11 +262,15 @@ if (message.channel.name.includes("console-lobby")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "now inherits permissions from";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
         }
     }
 }
@@ -249,11 +282,15 @@ if (message.channel.name.includes("console-survival")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "now inherits permissions from";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
         }
     }
 }
@@ -265,11 +302,15 @@ if (message.channel.name.includes("console-svsurvival")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "now inherits permissions from";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
         }
     }
 }
@@ -281,11 +322,15 @@ if (message.channel.name.includes("console-prison")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "now inherits permissions from";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-            bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+            bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
         }
     }
 }
@@ -297,11 +342,15 @@ if (message.channel.name.includes("console-factions")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "now inherits permissions from";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-            bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
+            bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
     }
 }
 }
@@ -312,11 +361,15 @@ if (message.channel.name.includes("console-skyblocks")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "now inherits permissions from";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-            bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
+            bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
     }
 }
 }
@@ -327,11 +380,15 @@ if (message.channel.name.includes("console-creative")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "now inherits permissions from";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-            bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
+            bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
     }
 }
 }
@@ -342,11 +399,15 @@ if (message.channel.name.includes("console-minigames")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "now inherits permissions from";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-            bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
+            bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
     }
 }
 }
@@ -358,11 +419,15 @@ if (message.channel.name.includes("console-lobby")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "no longer inherits permissions from";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-            bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
+            bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
     }
 }
 }
@@ -373,11 +438,15 @@ if (message.channel.name.includes("console-survival")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "no longer inherits permissions from";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-            bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
+            bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
     }
 }
 }
@@ -388,11 +457,15 @@ if (message.channel.name.includes("console-svsurvival")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "no longer inherits permissions from";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-            bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
+            bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
     }
 }
 }
@@ -403,11 +476,15 @@ if (message.channel.name.includes("console-prison")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "no longer inherits permissions from";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-            bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
+            bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
     }
 }
 }
@@ -418,11 +495,15 @@ if (message.channel.name.includes("console-factions")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "no longer inherits permissions from";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-            bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
+            bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
     }
 }
 }
@@ -433,11 +514,15 @@ if (message.channel.name.includes("console-skyblocks")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "no longer inherits permissions from";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-            bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
+            bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
     }
 }
 }
@@ -448,11 +533,15 @@ if (message.channel.name.includes("console-creative")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "no longer inherits permissions from";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-            bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
+            bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
     }
 }
 }
@@ -463,11 +552,15 @@ if (message.channel.name.includes("console-minigames")) {
             return
         }else{
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "no longer inherits permissions from";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-            bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
+            bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);        }
     }
 }
 }
@@ -475,11 +568,15 @@ if (message.channel.name.includes("console-minigames")) {
 if (message.channel.name.includes("console-lobby")) {   
     if (message.content.includes("[LP] Demoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046        
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Demoting";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
     }
 }
 }
@@ -487,11 +584,15 @@ if (message.channel.name.includes("console-lobby")) {
 if (message.channel.name.includes("console-survival")) {   
     if (message.content.includes("[LP] Demoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046        
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Demoting";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
     }
 }
 }
@@ -499,11 +600,15 @@ if (message.channel.name.includes("console-survival")) {
 if (message.channel.name.includes("console-svsurvival")) {   
     if (message.content.includes("[LP] Demoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046        
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Demoting";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-                bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+                bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
     }
 }
 }
@@ -511,11 +616,15 @@ if (message.channel.name.includes("console-svsurvival")) {
 if (message.channel.name.includes("console-prison")) {   
     if (message.content.includes("[LP] Demoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046        
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Demoting";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-                bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+                bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
     }
 }
 }
@@ -523,11 +632,15 @@ if (message.channel.name.includes("console-prison")) {
 if (message.channel.name.includes("console-skyblocks")) {   
     if (message.content.includes("[LP] Demoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046        
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Demoting";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
     }
 }
 }
@@ -535,11 +648,15 @@ if (message.channel.name.includes("console-skyblocks")) {
 if (message.channel.name.includes("console-creative")) {   
     if (message.content.includes("[LP] Demoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046        
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Demoting";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
     }
 }
 }
@@ -547,11 +664,15 @@ if (message.channel.name.includes("console-creative")) {
 if (message.channel.name.includes("console-minigames")) {   
     if (message.content.includes("[LP] Demoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046        
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Demoting";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
     }
 }
 }
@@ -560,11 +681,15 @@ if (message.channel.name.includes("console-minigames")) {
 if (message.channel.name.includes("console-lobby")) {
     if (message.content.includes("[LP] Promoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Promoting";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
     }
 }
 }
@@ -572,11 +697,15 @@ if (message.channel.name.includes("console-lobby")) {
 if (message.channel.name.includes("console-survival")) {
     if (message.content.includes("[LP] Promoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Promoting";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
     }
 }
 }
@@ -584,11 +713,15 @@ if (message.channel.name.includes("console-survival")) {
 if (message.channel.name.includes("console-svsurvival")) {
     if (message.content.includes("[LP] Promoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Promoting";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
     }
 }
 }
@@ -596,11 +729,15 @@ if (message.channel.name.includes("console-svsurvival")) {
 if (message.channel.name.includes("console-prison")) {
     if (message.content.includes("[LP] Promoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Promoting";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
     }
 }
 }
@@ -608,11 +745,15 @@ if (message.channel.name.includes("console-prison")) {
 if (message.channel.name.includes("console-factions")) {
     if (message.content.includes("[LP] Promoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Promoting";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
     }
 }
 }
@@ -620,11 +761,15 @@ if (message.channel.name.includes("console-factions")) {
 if (message.channel.name.includes("console-skyblocks")) {
     if (message.content.includes("[LP] Promoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Promoting";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
     }
 }
 }
@@ -632,11 +777,15 @@ if (message.channel.name.includes("console-skyblocks")) {
 if (message.channel.name.includes("console-creative")) {
     if (message.content.includes("[LP] Promoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Promoting";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
     }
 }
 }
@@ -644,23 +793,57 @@ if (message.channel.name.includes("console-creative")) {
 if (message.channel.name.includes("console-minigames")) {
     if (message.content.includes("[LP] Promoting")) {
         if(message.content.includes("[Messaging] Sending log with id:")){
+        //Channel ID for staff = 701520308976353421
+        //Channel ID for alerts = 701629915296170046     
+        const staff = '701520308976353421';
+        const lp = '701630251666767952';
         let channel = message.channel.name;
         var messageSplitted = message.content.split("\n");
         var substring = "[LP] Promoting";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
+        bot.channels.cache.get(lp).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
     }
 }
 }
+
+// if(message.content.includes("issued server command: /sudo") && message.content.includes("console")) {
+//   if (message.content.includes("Performed '/op' command as")) {
+//         var messageSplitted = message.content.split("\n");
+//         var substring = "Performed '/op' comamnd as";
+//         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
+//         //Channel ID for staff = 701520308976353421
+//         //Channel ID for alerts = 701629915296170046
+//         const staff = '701520308976353421';
+//         const alerts = '701629915296170046';
+//         let channel = message.channel.name;
+//         bot.channels.cache.get(staff).send(`**WARNING!** \`sudo\` command used for /op. Check \<#701629915296170046>\ for more info.`);
+//         bot.channels.cache.get(alerts).send(`**WARNING!** \`sudo\` command used for /op. Message :\`\`\`${filtered}\`\`\`It originated from ${channel}!`);
+//     }
+// }
+
+// if (message.channel.name.includes("console")) {
+//     if (message.content.includes("[LP] Preparing a new editor session. Please wait...")) {
+//         //Channel ID for staff = 701520308976353421
+//         //Channel ID for alerts = 701629915296170046     
+//         const staff = '701520308976353421';
+//         const lp = '701630251666767952';
+//         let channel = message.channel.name;
+//         var messageSplitted = message.content.split("\n");
+//         var substring = " [LP] Preparing";
+//         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
+//         bot.channels.cache.get(lp).send(`**WARNING!** \`[LuckPerms] lp editor\` used. It originated from ${channel}!`);
+// }
+// }
  
-//Ham5teak Server Assistance (Answers in tickets)
+//Ham5teak Server Assistance
 for (var i = 0; i < message.embeds.length; i++) {
-    if (message.embeds[i] && message.embeds[i].description && message.embeds[i].description.toLowerCase().includes("this user wants the service:")) {
+    if (message.embeds[i] && message.embeds[i].description && message.embeds[i].description.toLowerCase().includes("support will be with you shortly.")) {
     try {
-        const embed = new Discord.RichEmbed()
+        const embed = new Discord.MessageEmbed()
         .setColor('#0xff3300')
         .setTitle('🥩 Ham5teak Server Assistance')
-        .setDescription(`Hello! The Ham5teak Staff Team would like to assist you. \nIn order to make this process easier for us staff, please choose from the following choices by replying with the respective options \n(E.g : send a single number as a message) : \n\n**1**. **Item Lost** \n**2**. **Reporting an Issue/Bug** \n**3**. **Same IP Connection** \n**4**. **Connection Problems**\n**5**. **Forgot Password**\n**6**. **Ban/Mute Appeal**\n**7**. **Queries**`)
+        .setDescription(`Hello! The Ham5teak Staff Team would like to assist you. \nIn order to make this process easier for us staff, please choose from
+        the following choices by replying with the respective options \n(E.g : send a single number as a message) : \n\n**1**. **Item Lost** \n**2**. **Reporting an Issue/Bug** \n**3**. **Same IP Connection** \n**4**. **Connection Problems**\n**5**. **Forgot Password**\n**6**. **Ban/Mute Appeal**\n**7**. **Queries**`)
         .setFooter('Ham5teak Bot 2.0 | play.ham5teak.xyz | Made by Jaymz#7815')
         await message.channel.send(embed);
         console.log('\nA ticket has been created and Ham5teak Bot has replied accordingly.');
@@ -671,12 +854,13 @@ for (var i = 0; i < message.embeds.length; i++) {
 }
 }
 
-let user = message.author;
-	
+    let user = message.author;
+    const guild = bot.guilds.cache.get(guildID);
+    let category = guild.channels.cache.find(c => c.name == "--- Tickets ---" && c.type == "category");    
 if(!user.bot){
-    if(message.content === ("1") && message.channel.topic.startsWith("TICKET")) {
+    if(message.content === ("1") && message.channel.name.toLowerCase().includes("ticket")) {
         try {
-        	const embed = new Discord.RichEmbed()
+        	const embed = new Discord.MessageEmbed()
             .setColor('FF0000')
             .setTitle('🥩 Ham5teak Server Assistance')
             .setDescription("1. **Item Lost Due To Server Lag/Crash** \nIn-game Name:\nServer:\nItems you lost:  \n\nIf they are enchanted tools, please mention the enchantments if possible.")
@@ -689,9 +873,9 @@ if(!user.bot){
         }
     }
  
-if(message.content === ("2") && message.channel.topic.startsWith("TICKET")) {
+    if(message.content === ("2") && message.channel.name.toLowerCase().includes("ticket")) {
     try {
-        const embed = new Discord.RichEmbed()
+        const embed = new Discord.MessageEmbed()
         .setColor('FF7F00')
         .setTitle('🥩 Ham5teak Server Assistance')
         .setDescription("2. **Issue/Bug Report** \nIn-Game Name : \nServer: \nIssue/Bug :")
@@ -704,9 +888,9 @@ if(message.content === ("2") && message.channel.topic.startsWith("TICKET")) {
   }
 }
  
-if(message.content === ("3") && message.channel.topic.startsWith("TICKET")) {
+    if(message.content === ("3") && message.channel.name.toLowerCase().includes("ticket")) {
     try {  
-      	const embed = new Discord.RichEmbed()
+      	const embed = new Discord.MessageEmbed()
         .setColor('FFFF00')
         .setTitle('🥩 Ham5teak Server Assistance')
         .setDescription("3. **Same IP Connection** \nIn-Game Name of Same IP Connection : \n- \n- \n\nIP Address : (Format should be xxx.xxx.xxx.xxx)")
@@ -719,9 +903,9 @@ if(message.content === ("3") && message.channel.topic.startsWith("TICKET")) {
   }
 }
  
-  if(message.content === ("4") && message.channel.topic.startsWith("TICKET")) {
+    if(message.content === ("4") && message.channel.name.toLowerCase().includes("ticket")) {
     try {
-        const embed = new Discord.RichEmbed()
+        const embed = new Discord.MessageEmbed()
         .setColor('00FF00')
         .setTitle('🥩 Ham5teak Server Assistance')
         .setDescription("4. **Connection Problems** \nIn-game Name:\n\nWhat connection problem are you facing? Please explain briefly.")
@@ -733,9 +917,9 @@ if(message.content === ("3") && message.channel.topic.startsWith("TICKET")) {
     }
 }
  
-if(message.content === ("5") && message.channel.topic.startsWith("TICKET")) {
+    if(message.content === ("5") && message.channel.name.toLowerCase().includes("ticket")) {
     try {
-        const embed = new Discord.RichEmbed()
+        const embed = new Discord.MessageEmbed()
         .setColor('0000FF')
         .setTitle('🥩 Ham5teak Server Assistance')
         .setDescription("5. **Forgot Password** \nIn-game Name:\nIP Address : (Format should be xxx.xxx.xxx.xxx)")
@@ -747,9 +931,9 @@ if(message.content === ("5") && message.channel.topic.startsWith("TICKET")) {
     }
 }
  
-if(message.content === ("6") && message.channel.topic.startsWith("TICKET")) {
+    if(message.content === ("6") && message.channel.name.toLowerCase().includes("ticket")) {
     try {
-        const embed = new Discord.RichEmbed()
+        const embed = new Discord.MessageEmbed()
         .setColor('2E2B5F')
         .setTitle('🥩 Ham5teak Server Assistance')
         .setDescription("6. **Ban/Mute Appeal** \nWhy did you get banned/muted? \nWas it on discord or in-game? \n\nIf it was in-game, what is your in-game name and who banned/muted you? \nAlso - please do a ban appeal/mute appeal next time using https://ham5teak.xyz/forums/ban-appeal.21/")
@@ -761,9 +945,9 @@ if(message.content === ("6") && message.channel.topic.startsWith("TICKET")) {
     }
 }
  
-if(message.content === ("7") && message.channel.topic.startsWith("TICKET")) {
+    if(message.content === ("7") && message.channel.name.toLowerCase().includes("ticket")) {
     try {
-      const embed = new Discord.RichEmbed()
+      const embed = new Discord.MessageEmbed()
         .setColor('8B00FF')
         .setTitle('🥩 Ham5teak Server Assistance')
         .setDescription("7. **Queries** \nPlease state your questions here and wait patiently for a staff to reply. If you have to do something at the moment, please leave a note for Staff.")
@@ -796,4 +980,4 @@ if(message.content === ("7") && message.channel.topic.startsWith("TICKET")) {
   if(commandfile) commandfile.run(bot,message,args);
  
 })
-bot.login();
+bot.login(tokenfile.token);

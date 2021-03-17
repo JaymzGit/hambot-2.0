@@ -4,13 +4,13 @@ const fs = require("fs");
 
 module.exports.run = async (bot, message, args) => {
     let role = message.author.role;
-if (message.member.roles.some(role => role.name === 'High Staff')) {
+if (message.member.roles.cache.some(role => role.name === 'High Staff')) {
     let user = message.author;
     let channel = message.channel.name;
-if(message.channel.name.includes("bots") || message.channel.name.includes("staff") || message.channel.name.includes("shittalk-here") || message.channel.name.includes("high-staff")) {
+if(message.channel.name.includes("bots") || message.channel.name.includes("fun-stuff") ||  message.channel.name.includes("bot") ||  message.channel.name.includes("staff") || message.channel.name.includes("shittalk-here") || message.channel.name.includes("high-staff")) {
 	try{
     	ping('play.ham5teak.xyz', (error, reponse) =>{
-    	let pingembed = new Discord.RichEmbed()
+    	let pingembed = new Discord.MessageEmbed()
     		.setTitle('🥩 Ham5teak Server Status')
     		.setColor('#00FFFF')
     		.addField('Server IP', reponse.host)
