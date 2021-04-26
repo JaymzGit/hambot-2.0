@@ -13,13 +13,13 @@ module.exports.run = async (bot, message, args) => {
     let role = message.author.role;
     let channel = message.channel.name;
 
-    if(message.channel.topic.startsWith("TICKET")) {
+        if (message.member.roles.cache.some(role => role.name === 'Discord Mod') || message.member.roles.cache.some(role => role.name === 'Admin')) {
    if(args[0] == "undo"){
-        if (message.member.roles.some(role => role.name === 'Staff')) {
+        if (message.member.roles.cache.some(role => role.name === 'Staff')) {
             if (user.bot) return;
-            const guild = bot.guilds.get("380308776114454528");
+            const guild = bot.guilds.cache.get("380308776114454528");
             const ticketid = message.channel.id;
-            await bot.channels.get(ticketid).overwritePermissions('449475721921036288', {
+            await bot.channels.cache.get(ticketid).overwritePermissions('449475721921036288', {
             VIEW_CHANNEL: true,
             SEND_MESSAGES: true,
             READ_MESSAGES: true,
@@ -33,12 +33,12 @@ module.exports.run = async (bot, message, args) => {
     return;
 }
 
-    if(args[0] == "hs"){
-        if (message.member.roles.some(role => role.name === 'Staff')) {
+    if(args[0] == "highstaff"){
+        if (message.member.roles.cache.some(role => role.name === 'Staff')) {
             if (user.bot) return;
-            const guild = bot.guilds.get("380308776114454528");
+            const guild = bot.guilds.cache.get("380308776114454528");
             const ticketid = message.channel.id;
-            await bot.channels.get(ticketid).overwritePermissions('449475721921036288', {
+            await bot.channels.cache.get(ticketid).overwritePermissions('449475721921036288', {
             VIEW_CHANNEL: false,
             SEND_MESSAGES: false,
             READ_MESSAGES: false,
@@ -46,7 +46,7 @@ module.exports.run = async (bot, message, args) => {
             ATTACH_FILES: false,
             });
 
-            await bot.channels.get(ticketid).overwritePermissions('453134163420119051', {
+            await bot.channels.cache.get(ticketid).overwritePermissions('453134163420119051', {
             VIEW_CHANNEL: true,
             SEND_MESSAGES: true,
             READ_MESSAGES: true,
@@ -54,18 +54,45 @@ module.exports.run = async (bot, message, args) => {
             ATTACH_FILES: true,
             });
 
-            message.author.send(`Ticket #${channel} was locked to High Staff and above.`)
+            message.channel.send(`Ticket #${channel} was locked to High Staff and above.`)
+            message.delete();
+    }
+return;
+}
+
+    if(args[0] == "hs"){
+        if (message.member.roles.cache.some(role => role.name === 'Staff')) {
+            if (user.bot) return;
+            const guild = bot.guilds.cache.get("380308776114454528");
+            const ticketid = message.channel.id;
+            await bot.channels.cache.get(ticketid).overwritePermissions('449475721921036288', {
+            VIEW_CHANNEL: false,
+            SEND_MESSAGES: false,
+            READ_MESSAGES: false,
+            READ_MESSAGE_HISTORY: false,
+            ATTACH_FILES: false,
+            });
+
+            await bot.channels.cache.get(ticketid).overwritePermissions('453134163420119051', {
+            VIEW_CHANNEL: true,
+            SEND_MESSAGES: true,
+            READ_MESSAGES: true,
+            READ_MESSAGE_HISTORY: true,
+            ATTACH_FILES: true,
+            });
+
+            message.channel.send(`Ticket #${channel} was locked to High Staff and above.`)
             message.delete();
     }
 return;
 }
 
     if(args[0] == "sh"){
-        if (message.member.roles.some(role => role.name === 'Staff')) {
+        if (message.member.roles.cache.some(role => role.name === 'Staff')) {
             if (user.bot) return;
-            const guild = bot.guilds.get("380308776114454528");
+            const guild = bot.guilds.cache.get("380308776114454528");
             const ticketid = message.channel.id;
-            await bot.channels.get(ticketid).overwritePermissions('449475721921036288', {
+            await bot.channels.cache.get(ticketid).overwritePermissions('449475721921036288', {
             VIEW_CHANNEL: false,
             SEND_MESSAGES: false,
             READ_MESSAGES: false,
@@ -73,7 +100,7 @@ return;
             ATTACH_FILES: false,
             });
 
-            await bot.channels.get(ticketid).overwritePermissions('453134163420119051', {
+            await bot.channels.cache.get(ticketid).overwritePermissions('453134163420119051', {
             VIEW_CHANNEL: false,
             SEND_MESSAGES: false,
             READ_MESSAGES: false,
@@ -81,7 +108,7 @@ return;
             ATTACH_FILES: false,
             });
 
-            await bot.channels.get(ticketid).overwritePermissions('528492844348866560', {
+            await bot.channels.cache.get(ticketid).overwritePermissions('528492844348866560', {
             VIEW_CHANNEL: true,
             SEND_MESSAGES: true,
             READ_MESSAGES: true,
@@ -89,18 +116,45 @@ return;
             ATTACH_FILES: true,
             });
 
-            message.author.send(`Ticket #${channel} was locked to Server Heads and above.`)
+            message.channel.send(`Ticket #${channel} was locked to Server-Heads and above.`)
+            message.delete();
+    }
+return;
+}
+
+    if(args[0] == "serverhead"){
+        if (message.member.roles.cache.some(role => role.name === 'Staff')) {
+            if (user.bot) return;
+            const guild = bot.guilds.cache.get("380308776114454528");
+            const ticketid = message.channel.id;
+            await bot.channels.cache.get(ticketid).overwritePermissions('449475721921036288', {
+            VIEW_CHANNEL: false,
+            SEND_MESSAGES: false,
+            READ_MESSAGES: false,
+            READ_MESSAGE_HISTORY: false,
+            ATTACH_FILES: false,
+            });
+
+            await bot.channels.cache.get(ticketid).overwritePermissions('453134163420119051', {
+            VIEW_CHANNEL: true,
+            SEND_MESSAGES: true,
+            READ_MESSAGES: true,
+            READ_MESSAGE_HISTORY: true,
+            ATTACH_FILES: true,
+            });
+
+            message.channel.send(`Ticket #${channel} was locked to Server-Heads and above.`)
             message.delete();
     }
 return;
 }
 
     if(args[0] == "cows"){
-        if (message.member.roles.some(role => role.name === 'Staff')) {
+        if (message.member.roles.cache.some(role => role.name === 'Staff')) {
             if (user.bot) return;
-            const guild = bot.guilds.get("380308776114454528");
+            const guild = bot.guilds.cache.get("380308776114454528");
             const ticketid = message.channel.id;
-            await bot.channels.get(ticketid).overwritePermissions('449475721921036288', {
+            await bot.channels.cache.get(ticketid).overwritePermissions('449475721921036288', {
             VIEW_CHANNEL: false,
             SEND_MESSAGES: false,
             READ_MESSAGES: false,
@@ -108,7 +162,7 @@ return;
             ATTACH_FILES: false,
             });
 
-            await bot.channels.get(ticketid).overwritePermissions('453134163420119051', {
+            await bot.channels.cache.get(ticketid).overwritePermissions('453134163420119051', {
             VIEW_CHANNEL: false,
             SEND_MESSAGES: false,
             READ_MESSAGES: false,
@@ -116,7 +170,7 @@ return;
             ATTACH_FILES: false,
             });
 
-            await bot.channels.get(ticketid).overwritePermissions('528492844348866560', {
+            await bot.channels.cache.get(ticketid).overwritePermissions('528492844348866560', {
             VIEW_CHANNEL: false,
             SEND_MESSAGES: false,
             READ_MESSAGES: false,
@@ -124,7 +178,7 @@ return;
             ATTACH_FILES: false,
             });
 
-            await bot.channels.get(ticketid).overwritePermissions('380582068134084618', {
+            await bot.channels.cache.get(ticketid).overwritePermissions('380582068134084618', {
             VIEW_CHANNEL: true,
             SEND_MESSAGES: true,
             READ_MESSAGES: true,
@@ -132,7 +186,61 @@ return;
             ATTACH_FILES: true,
             });
 
-            message.author.send(`Ticket #${channel} was locked to Co-Owners and above.`)
+            message.channel.send(`Ticket #${channel} was locked to Co-Owners and above.`)
+            message.delete();
+    }
+return;
+}
+
+    if(args[0] == "coowner"){
+        if (message.member.roles.cache.some(role => role.name === 'Staff')) {
+            if (user.bot) return;
+            const guild = bot.guilds.cache.get("380308776114454528");
+            const ticketid = message.channel.id;
+            await bot.channels.cache.get(ticketid).overwritePermissions('449475721921036288', {
+            VIEW_CHANNEL: false,
+            SEND_MESSAGES: false,
+            READ_MESSAGES: false,
+            READ_MESSAGE_HISTORY: false,
+            ATTACH_FILES: false,
+            });
+
+            await bot.channels.cache.get(ticketid).overwritePermissions('453134163420119051', {
+            VIEW_CHANNEL: true,
+            SEND_MESSAGES: true,
+            READ_MESSAGES: true,
+            READ_MESSAGE_HISTORY: true,
+            ATTACH_FILES: true,
+            });
+
+            message.channel.send(`Ticket #${channel} was locked to Co Owners and above.`)
+            message.delete();
+    }
+return;
+}
+
+    if(args[0] == "coowners"){
+        if (message.member.roles.cache.some(role => role.name === 'Staff')) {
+            if (user.bot) return;
+            const guild = bot.guilds.cache.get("380308776114454528");
+            const ticketid = message.channel.id;
+            await bot.channels.cache.get(ticketid).overwritePermissions('449475721921036288', {
+            VIEW_CHANNEL: false,
+            SEND_MESSAGES: false,
+            READ_MESSAGES: false,
+            READ_MESSAGE_HISTORY: false,
+            ATTACH_FILES: false,
+            });
+
+            await bot.channels.cache.get(ticketid).overwritePermissions('453134163420119051', {
+            VIEW_CHANNEL: true,
+            SEND_MESSAGES: true,
+            READ_MESSAGES: true,
+            READ_MESSAGE_HISTORY: true,
+            ATTACH_FILES: true,
+            });
+
+            message.channel.send(`Ticket #${channel} was locked to Co-Owners and above.`)
             message.delete();
     }
 return;
