@@ -18,6 +18,7 @@ This bot uses Javascript (JS) with the node module Discord.js
 **This project was also a colaboration between** :
 1. Jaymz (myself)
 2. SottaByte
+3. Beastman9095
 
 > Copyright © 2020 JaymzGit
 
