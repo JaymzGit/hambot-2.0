@@ -1,7 +1,8 @@
 const Discord = require("discord.js");
 const errors = require("../utils/errors.js");
-
+const { prefix } = require("../prefixes.json");
 module.exports.run = async (bot, message, args) => {
+  if(!message.content.startsWith(prefix)) return;
 	const guildID = "380308776114454528";
 
     if(args[0] == "help"){

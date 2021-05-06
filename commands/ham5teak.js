@@ -1,8 +1,9 @@
 const Discord = require("discord.js");
 const ping = require("minecraft-server-util");
 const fs = require("fs");
-
+const { prefix } = require("../prefixes.json");
 module.exports.run = async (bot, message, args) => {
+  if(!message.content.startsWith(prefix)) return;
     let role = message.author.role;
 if (message.member.roles.cache.some(role => role.name === 'High Staff')) {
     let user = message.author;

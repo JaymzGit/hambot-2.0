@@ -58,7 +58,8 @@ if (message.channel.name.includes("announcements") || message.channel.name.inclu
                 .setAuthor(name, message.author.avatarURL())
                 .setImage(proxyURL) //sends a link to the image in storage
                 .setFooter('Ham5teak Bot 2.0 | play.ham5teak.xyz | Made by Jaymz#7815')
-                .setColor('#00FFFF')
+                .setColor(message.member.displayHexColor)
+              if(message.member.displayHexColor == '#000000') embed.setColor('#00FFFF')
         		const sentEmbed = await message.channel.send(embed);
                 await message.delete({ timeout: 1000 });
                 //Logs to console an announcement was made.
@@ -72,7 +73,8 @@ if (message.channel.name.includes("announcements") || message.channel.name.inclu
                 .setDescription(message.content)
                 .setAuthor(name, message.author.avatarURL())
                 .setFooter('Ham5teak Bot 2.0 | play.ham5teak.xyz | Made by Jaymz#7815')
-                .setColor('#00FFFF')
+                .setColor(message.member.displayHexColor)
+              if(message.member.displayHexColor == '#000000') embed.setColor('#00FFFF')
         		const sentEmbed = await message.channel.send(embed);
                 await message.delete();
                 //Logs to console an announcement was made.
@@ -98,7 +100,8 @@ if (message.channel.name.toLowerCase().includes('polls')|| message.channel.name.
         .setDescription(message.content)
         .setAuthor(name, message.author.avatarURL())
         .setFooter('Ham5teak Bot 2.0 | play.ham5teak.xyz | Made by Jaymz#7815')
-        .setColor('#00FFFF')
+        .setColor(message.member.displayHexColor)
+      if(message.member.displayHexColor == '#000000') embed.setColor('#00FFFF')
  
         const sentEmbed = await message.channel.send(embed);
         await message.delete();
@@ -117,7 +120,7 @@ if (message.channel.name.includes("console")){
         var messageSplitted = message.content.split("\n");
         var substring = "a server operator";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.cache.get(staff).send(`**WARNING!** \`/op\` or \`/deop\` was used. Check \<#701629915296170046>\ for more info`);
+        bot.channels.cache.get(staff).send(`**WARNING!** \`/op\` or \`/deop\` was used. Check \<#701629915296170046>\ for more info`).then(msg => msg.delete({timeout: 600000}));
         bot.channels.cache.get(alerts).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
     }
 }
