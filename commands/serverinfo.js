@@ -1,7 +1,8 @@
 const Discord = module.require('discord.js');
 const client = new Discord.Client();
-
+const { prefix } = require("../prefixes.json");
 module.exports.run = async (bot, message, args) => {
+  if(!message.content.startsWith(prefix)) return;
 
     let role = message.author.role;
 if (message.member.roles.cache.some(role => role.name === 'High Staff')) {

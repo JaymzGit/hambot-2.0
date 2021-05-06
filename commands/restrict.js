@@ -1,7 +1,8 @@
 const Discord = require("discord.js");
 const errors = require("../utils/errors.js");
-
+const { prefix } = require("../prefixes.json");
 module.exports.run = async (bot, message, args) => {
+  if(!message.content.startsWith(prefix)) return;
 
     if(args[0] == "help"){
       message.channel.send("Usage: `-restrict highstaff` / `-restrict sh` / `-restrict cows` / `-restrict undo`");

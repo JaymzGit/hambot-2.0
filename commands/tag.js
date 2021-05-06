@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
-
+const { prefix } = require("../prefixes.json");
 module.exports.run = async (bot, message, args) => {
+  if(!message.content.startsWith(prefix)) return;
 
     let role = message.author.role;
 if (message.member.roles.cache.some(role => role.name === 'Staff') || message.member.roles.cache.some(role => role.name === 'Discord Staff')) {
@@ -12,7 +13,8 @@ if (message.member.roles.cache.some(role => role.name === 'Staff') || message.me
             const embed = new Discord.MessageEmbed()
                 .setDescription(`${user} has marked this issue as \`${message.content.toString().toUpperCase().slice(5)}\``)
                 .setFooter('Ham5teak Bot 2.0 | play.ham5teak.xyz | Made by Jaymz#7815')
-                .setColor('#00FFFF')
+                .setColor(message.member.displayHexColor)
+              if(message.member.displayHexColor == '#000000') embed.setColor('#00FFFF')
             await message.channel.send(embed);
             await message.delete();
             console.log(`\n#${channel} was tagged as ${message.content.toString().toUpperCase().slice(5)} by ${username}`)

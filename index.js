@@ -5,9 +5,15 @@ const Discord = require("discord.js");
 const ping = require("minecraft-server-util")
 const fs = require("fs");
 const bot = new Discord.Client({disableEveryone: true});
+const interactions = require("discord-slash-commands-client");
 bot.commands = new Discord.Collection();
 
-const guildID = "380308776114454528";
+const guildId = '380308776114454528';
+const staff = '';
+const lp = '';
+const alerts ='';
+const crash = '';
+const techstaff = '<@&755728731108016178>';
 
 //Check for any files in the commands folders (aka checking if the bot has the following commands or not)
 fs.readdir("./commands/", (err, files) => {
@@ -31,10 +37,272 @@ fs.readdir("./commands/", (err, files) => {
   });
 });
 
+
+const getApp = (guildId) => {
+  const app = bot.api.applications(bot.user.id)
+  if (guildId) {
+    app.guilds(guildId)
+  }
+  return app
+}
+
 bot.on("ready", async () => {
 	console.log(`\n${bot.user.username} is online!`);
-	bot.user.setActivity("over Ham5teak", {type: "WATCHING"});
-})
+  const client = new interactions.Client(
+      tokenfile.token,
+      "650295824152133662"
+    );
+    bot.user.setActivity('over Ham5teak', { type: 'WATCHING' });
+    console.log(bot.api.applications(bot.user.id).commands.get())
+
+    const commands = await getApp(guildId).commands.get()
+    console.log(commands)
+      
+    await getApp(guildId).commands.post({
+        data: {
+          name: 'ham5teak',
+          description: 'View Ham5teak Network status',
+        },
+      })
+  
+      await getApp(guildId).commands.post({
+        data: {
+            name: 'tag',
+            description: 'Tag a channel with a note',
+            options: [
+              {
+                name: 'Note',
+                description: 'Note',
+                required: true,
+                type: 3,   //string
+              },
+            ],
+          },
+        })
+
+        await getApp(guildId).commands.post({
+          data: {
+              name: 'edit',
+              description: 'Edit an announcement',
+              options: [
+                {
+                  name: 'id',
+                  description: 'ID of the message that will be edited',
+                  required: true,
+                  type: 3,   //string
+                },
+                {
+                  name: 'new',
+                  description: 'New content of the message',
+                  required: true,
+                  type: 3,   //string
+                },
+              ],
+            },
+          })
+
+    await getApp(guildId).commands.post({
+        data: {
+            name: 'move',
+            description: 'Move channel to a category',
+            options: [
+              {
+                name: 'Category',
+                description: 'Category that the channel will be moved to',
+                required: true,
+                type: 3,   //string
+                choices: [
+                    {
+                        name: "tickets",
+                        value: "tickets"
+                    },
+                    {
+                        name: "survival",
+                        value: "survival"
+                    },
+                    {
+                        name: "skyblocks",
+                        value: "survival"
+                    },
+                    {
+                        name: "factions",
+                        value: "survival"
+                    },
+                    {
+                        name: "svanilla",
+                        value: "svanilla"
+                    },
+                    {
+                        name: "prison",
+                        value: "prison"
+                    },
+                    {
+                        name: "creative",
+                        value: "creative"
+                    },
+                    {
+                        name: "minigames",
+                        value: "minigames"
+                    },
+                    {
+                        name: "caveblocks",
+                        value: "caveblocks"
+                    },
+                    {
+                        name: "discord",
+                        value: "discord"
+                    },
+                    {
+                        name: "closed",
+                        value: "closed"
+                    },
+                ],
+              },
+            ],
+          },
+        })
+
+            bot.ws.on('INTERACTION_CREATE', async (interaction) => {
+              const { name, options } = interaction.data
+        
+              const command = name.toLowerCase()
+        
+              const args = interaction.data.options
+        
+              if (options) {
+                for (const option of options) {
+                  const { name, value } = option
+                  args[name] = value
+                }
+              }
+        
+              if(command === 'move'){
+                const channel = await bot.channels.fetch(interaction.channel_id)
+                const guild = await bot.guilds.fetch(interaction.guild_id)
+                const role = guild.roles.cache.find(role => role.name === 'Staff')
+                const checkrole = await role.members.find(m=>m.user.id === interaction.member.user.id)
+                if(!checkrole){return}
+                const cat = args.find(arg => arg.name.toLowerCase() == 'category').value;
+                    if(cat === "t" || cat === "tickets"){
+                    bot.channels.resolve(interaction.channel_id).setParent("606680422600146955")
+                    }else if (cat === "sv" || cat === "survival"){
+                        bot.channels.resolve(interaction.channel_id).setParent("632946682207928321")
+                        }else if (cat === "sb" || cat === "skyblocks"){
+                            bot.channels.resolve(interaction.channel_id).setParent("632946712805244948")
+                            }else if (cat === "fac" || cat === "faction"){
+                              bot.channels.resolve(interaction.channel_id).setParent("659020993553104896")
+                              }else if (cat === "svsv" || cat === "svanilla"){
+                                bot.channels.resolve(interaction.channel_id).setParent("667988805059346435")
+                                }else if (cat === "pr" || cat === "prison"){
+                                  bot.channels.resolve(interaction.channel_id).setParent("632946839792123948")
+                                  }else if (cat === "cr" || cat === "creative"){
+                                    bot.channels.resolve(interaction.channel_id).setParent("632946812092678154")
+                                    }else if (cat === "mg" || cat === "minigames"){
+                                      bot.channels.resolve(interaction.channel_id).setParent("664805277991960586")
+                                      }else if (cat === "cb" || cat === "caveblocks"){
+                                        bot.channels.resolve(interaction.channel_id).setParent("786399045081890858")
+                                        }else if (cat === "dc" || cat === "discord"){
+                                          bot.channels.resolve(interaction.channel_id).setParent("786464294732562472")
+                                          }else if (cat === "c" || cat === "closed"){
+                                            bot.channels.resolve(interaction.channel_id).setParent("721049582070398994")
+                                            }
+                    const embed = new Discord.MessageEmbed()
+                    const userobject = await bot.users.fetch(interaction.member.user.id)
+                    embed.setAuthor(interaction.member.user.username, userobject.avatarURL())
+                    embed.setColor('#00FFFF')
+                    embed.setDescription('#' + channel.name + ' has been moved to '+ cat + ' category.')
+                    reply(interaction, embed)
+                    console.log(interaction.member.user.username + " has moved #" + channel.name + " to " + cat)
+              }else if (command === 'edit'){
+                const guild = await bot.guilds.fetch(interaction.guild_id)
+                const role = guild.roles.cache.find(role => role.name === 'High Staff')
+                const checkrole = await role.members.find(m=>m.user.id === interaction.member.user.id)
+                if(!checkrole){return}
+                const id = args.find(arg => arg.name.toLowerCase() == 'id').value;
+                const content = args.find(arg => arg.name.toLowerCase() == 'new').value;
+                const userobject = await bot.users.fetch(interaction.member.user.id)
+                const channel = await bot.channels.fetch(interaction.channel_id)
+        
+                try{      
+                  channel.messages.fetch({around: id, limit: 1})
+                      .then(msg => {
+                      const fetchedMsg = msg.first();
+                      if(fetchedMsg.author.bot){
+                      const embed1 = new Discord.MessageEmbed()
+                      embed1.setAuthor(interaction.member.user.username, userobject.avatarURL())
+                      embed1.setColor('#00FFFF')
+                      embed1.setDescription(content)
+                      embed1.setFooter('Ham5teak Bot 2.0 | play.ham5teak.xyz | Made by Jaymz#7815')
+                      fetchedMsg.edit(embed1);
+                      }else {return}
+                      })
+                        .catch(console.error);   
+                    }
+                      catch (error) {
+                        console.error(error)
+                    }
+              }else if (command === 'tag'){
+                const channel = await bot.channels.fetch(interaction.channel_id);
+                const tag = args.find(arg => arg.name.toLowerCase() == 'note').value.toString().toUpperCase();
+                const embed = new Discord.MessageEmbed()
+                const userobject = await bot.users.fetch(interaction.member.user.id)
+                const guild = await bot.guilds.fetch(interaction.guild_id)
+                const role = guild.roles.cache.find(role => role.name === 'Staff')
+                const checkrole = await role.members.find(m=>m.user.id === interaction.member.user.id)
+                if(!checkrole){return}
+                embed.setAuthor(interaction.member.user.username, userobject.avatarURL())
+                embed.setColor('#00FFFF')
+                embed.setDescription(interaction.member.user.username + ` has tagged the channel as \`` + tag +`\``)
+                embed.setFooter('Ham5teak Bot 2.0 | play.ham5teak.xyz | Made by Jaymz#7815')
+                reply(interaction, embed)
+                console.log(interaction.member.user.username + " has tagged " + channel.name + " as " + tag)
+            }else if (command === 'ham5teak'){
+                const util = require('minecraft-server-util');
+                const pingembed = new Discord.MessageEmbed()
+                const channel = await bot.channels.fetch(interaction.channel_id);
+        
+        util.status('play.ham5teak.xyz') // port is default 25565
+            .then((response) => {
+                pingembed.setAuthor('Ham5teak Network Status', 'https://cdn.discordapp.com/icons/380308776114454528/a_be4514bb0a52a206d1bddbd5fbd2250f.webp?size=128')
+                pingembed.setColor('#00FFFF')
+                pingembed.addField('Server IP:', response.host)
+                pingembed.addField('Online Players:', response.onlinePlayers)
+                pingembed.addField('Max Players:', response.maxPlayers)
+                reply(interaction, pingembed)
+                console.log("Ham5teak Network status has been sent to " + interaction.member.user.username + " in "  + channel.name)
+            })
+              }
+            })
+          })
+        
+          const reply = async (interaction, response) => {
+            let data = {
+              content: response,
+            }
+        
+             // Check for embeds
+            if (typeof response === 'object') {
+              data = await createAPIMessage(interaction, response)
+            }
+        
+            bot.api.interactions(interaction.id, interaction.token).callback.post({
+              data: {
+                type: 4,
+                data,
+              },
+            })
+          }
+        
+          const createAPIMessage = async (interaction, content) => {
+            const { data, files } = await Discord.APIMessage.create(
+              bot.channels.resolve(interaction.channel_id),
+              content
+            )
+              .resolveData()
+              .resolveFiles()
+        
+            return { ...data, files }
+          }
 
 bot.on("message", async message => {
 //Checks for if the channel name in lower case includes "announcements" OR "updates"
@@ -58,7 +326,8 @@ if (message.channel.name.includes("announcements") || message.channel.name.inclu
                 .setAuthor(name, message.author.avatarURL())
                 .setImage(proxyURL) //sends a link to the image in storage
                 .setFooter('Ham5teak Bot 2.0 | play.ham5teak.xyz | Made by Jaymz#7815')
-                .setColor('#00FFFF')
+                .setColor(message.member.displayHexColor)
+              if(message.member.displayHexColor == '#000000') embed.setColor('#00FFFF')
         		const sentEmbed = await message.channel.send(embed);
                 await message.delete({ timeout: 1000 });
                 //Logs to console an announcement was made.
@@ -72,7 +341,8 @@ if (message.channel.name.includes("announcements") || message.channel.name.inclu
                 .setDescription(message.content)
                 .setAuthor(name, message.author.avatarURL())
                 .setFooter('Ham5teak Bot 2.0 | play.ham5teak.xyz | Made by Jaymz#7815')
-                .setColor('#00FFFF')
+                .setColor(message.member.displayHexColor)
+              if(message.member.displayHexColor == '#000000') embed.setColor('#00FFFF')
         		const sentEmbed = await message.channel.send(embed);
                 await message.delete();
                 //Logs to console an announcement was made.
@@ -98,7 +368,8 @@ if (message.channel.name.toLowerCase().includes('polls')|| message.channel.name.
         .setDescription(message.content)
         .setAuthor(name, message.author.avatarURL())
         .setFooter('Ham5teak Bot 2.0 | play.ham5teak.xyz | Made by Jaymz#7815')
-        .setColor('#00FFFF')
+        .setColor(message.member.displayHexColor)
+      if(message.member.displayHexColor == '#000000') embed.setColor('#00FFFF')
  
         const sentEmbed = await message.channel.send(embed);
         await message.delete();
@@ -117,7 +388,7 @@ if (message.channel.name.includes("console")){
         var messageSplitted = message.content.split("\n");
         var substring = "a server operator";
         filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
-        bot.channels.cache.get(staff).send(`**WARNING!** \`/op\` or \`/deop\` was used. Check \<#701629915296170046>\ for more info`);
+        bot.channels.cache.get(staff).send(`**WARNING!** \`/op\` or \`/deop\` was used. Check \<#701629915296170046>\ for more info`).then(msg => msg.delete({timeout: 600000}));
         bot.channels.cache.get(alerts).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!`);
     }
 }
@@ -247,6 +518,17 @@ if (message.channel.name.includes("console-lobby")) {
     }
 }
 }
+
+if (message.channel.name.includes("console-")) {
+    if (message.content.includes("UTC ERROR] Main thread terminated by WatchDog due to hard crash")) {
+        let channel = message.channel.name;
+        var messageSplitted = message.content.split("\n");
+        var substring = "Main thread terminated by WatchDog due to hard crash";
+        filtered = messageSplitted.filter(function (str) { return str.includes(substring); });
+        bot.channels.cache.get(staff).send(`**WARNING!** a server has just crashed. Check \<#` + crash + `>\ for more info.`).then(msg => msg.delete({timeout: 3000000}));
+        bot.channels.cache.get(crash).send(`\`\`\`${filtered}\`\`\` It originated from ${channel}!` + ' ' + techstaff);
+  }
+  }
 
 if (message.channel.name.includes("console-survival")) {
     if (message.content.includes("now inherits permissions from")) {
