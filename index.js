@@ -312,6 +312,7 @@ if (message.channel.name.includes("announcements") || message.channel.name.inclu
     let user = message.author;
     let role = message.author.role;
     let channel = message.channel.name;
+    if (!message.content.startsWith('-edit')){
     if (user.bot) return;
         try {
             const name = message.member.displayName;
@@ -354,6 +355,7 @@ if (message.channel.name.includes("announcements") || message.channel.name.inclu
             //Logs to console any errors.
             console.error(error)
         }
+    }
     }
  
 //Checks for if the channel name in lower case includes "polls" or "suggestions"
@@ -971,7 +973,7 @@ for (var i = 0; i < message.embeds.length; i++) {
         .setDescription(`Hello! The Ham5teak Staff Team would like to assist you. \nIn order to make this process easier for us staff, please choose from
         the following choices by replying with the respective options \n(E.g : send a single number as a message) : \n\n**1**. **Item Lost** \n**2**. **Reporting an Issue/Bug** \n**3**. **Same IP Connection** \n**4**. **Connection Problems**\n**5**. **Forgot Password**\n**6**. **Ban/Mute Appeal**\n**7**. **Queries**`)
         .setFooter('Ham5teak Bot 2.0 | play.ham5teak.xyz | Made by Jaymz#7815')
-        await message.channel.send(embed);
+        await message.channel.send("<@&832198461495443506>", embed);
         console.log('\nA ticket has been created and Ham5teak Bot has replied accordingly.');
  
     } catch (error) {
