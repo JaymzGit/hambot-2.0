@@ -9,6 +9,7 @@ const interactions = require("discord-slash-commands-client");
 bot.commands = new Discord.Collection();
 
 const guildId = '380308776114454528';
+const guildID = '380308776114454528';
 const staff = '';
 const lp = '';
 const alerts ='';
@@ -122,11 +123,11 @@ bot.on("ready", async () => {
                     },
                     {
                         name: "skyblocks",
-                        value: "survival"
+                        value: "skyblocks"
                     },
                     {
                         name: "factions",
-                        value: "survival"
+                        value: "factions"
                     },
                     {
                         name: "svanilla",
@@ -184,27 +185,27 @@ bot.on("ready", async () => {
                 if(!checkrole){return}
                 const cat = args.find(arg => arg.name.toLowerCase() == 'category').value;
                     if(cat === "t" || cat === "tickets"){
-                    bot.channels.resolve(interaction.channel_id).setParent("606680422600146955")
+                    bot.channels.resolve(interaction.channel_id).setParent("606680422600146955", {lockPermissions: false})
                     }else if (cat === "sv" || cat === "survival"){
-                        bot.channels.resolve(interaction.channel_id).setParent("632946682207928321")
+                        bot.channels.resolve(interaction.channel_id).setParent("632946682207928321", {lockPermissions: false})
                         }else if (cat === "sb" || cat === "skyblocks"){
-                            bot.channels.resolve(interaction.channel_id).setParent("632946712805244948")
-                            }else if (cat === "fac" || cat === "faction"){
-                              bot.channels.resolve(interaction.channel_id).setParent("659020993553104896")
+                            bot.channels.resolve(interaction.channel_id).setParent("632946712805244948", {lockPermissions: false})
+                            }else if (cat === "fac" || cat === "factions"){
+                              bot.channels.resolve(interaction.channel_id).setParent("659020993553104896", {lockPermissions: false})
                               }else if (cat === "svsv" || cat === "svanilla"){
-                                bot.channels.resolve(interaction.channel_id).setParent("667988805059346435")
+                                bot.channels.resolve(interaction.channel_id).setParent("667988805059346435", {lockPermissions: false})
                                 }else if (cat === "pr" || cat === "prison"){
-                                  bot.channels.resolve(interaction.channel_id).setParent("632946839792123948")
+                                  bot.channels.resolve(interaction.channel_id).setParent("632946839792123948", {lockPermissions: false})
                                   }else if (cat === "cr" || cat === "creative"){
-                                    bot.channels.resolve(interaction.channel_id).setParent("632946812092678154")
+                                    bot.channels.resolve(interaction.channel_id).setParent("632946812092678154", {lockPermissions: false})
                                     }else if (cat === "mg" || cat === "minigames"){
-                                      bot.channels.resolve(interaction.channel_id).setParent("664805277991960586")
+                                      bot.channels.resolve(interaction.channel_id).setParent("664805277991960586", {lockPermissions: false})
                                       }else if (cat === "cb" || cat === "caveblocks"){
-                                        bot.channels.resolve(interaction.channel_id).setParent("786399045081890858")
+                                        bot.channels.resolve(interaction.channel_id).setParent("786399045081890858", {lockPermissions: false})
                                         }else if (cat === "dc" || cat === "discord"){
-                                          bot.channels.resolve(interaction.channel_id).setParent("786464294732562472")
+                                          bot.channels.resolve(interaction.channel_id).setParent("786464294732562472", {lockPermissions: false})
                                           }else if (cat === "c" || cat === "closed"){
-                                            bot.channels.resolve(interaction.channel_id).setParent("721049582070398994")
+                                            bot.channels.resolve(interaction.channel_id).setParent("721049582070398994", {lockPermissions: false})
                                             }
                     const embed = new Discord.MessageEmbed()
                     const userobject = await bot.users.fetch(interaction.member.user.id)
@@ -312,6 +313,7 @@ if (message.channel.name.includes("announcements") || message.channel.name.inclu
     let user = message.author;
     let role = message.author.role;
     let channel = message.channel.name;
+    if (!message.content.startsWith('-edit')){
     if (user.bot) return;
         try {
             const name = message.member.displayName;
@@ -354,6 +356,7 @@ if (message.channel.name.includes("announcements") || message.channel.name.inclu
             //Logs to console any errors.
             console.error(error)
         }
+    }
     }
  
 //Checks for if the channel name in lower case includes "polls" or "suggestions"
@@ -971,7 +974,7 @@ for (var i = 0; i < message.embeds.length; i++) {
         .setDescription(`Hello! The Ham5teak Staff Team would like to assist you. \nIn order to make this process easier for us staff, please choose from
         the following choices by replying with the respective options \n(E.g : send a single number as a message) : \n\n**1**. **Item Lost** \n**2**. **Reporting an Issue/Bug** \n**3**. **Same IP Connection** \n**4**. **Connection Problems**\n**5**. **Forgot Password**\n**6**. **Ban/Mute Appeal**\n**7**. **Queries**`)
         .setFooter('Ham5teak Bot 2.0 | play.ham5teak.xyz | Made by Jaymz#7815')
-        await message.channel.send(embed);
+        await message.channel.send("<@&832198461495443506>", embed);
         console.log('\nA ticket has been created and Ham5teak Bot has replied accordingly.');
  
     } catch (error) {
