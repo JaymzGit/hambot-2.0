@@ -157,6 +157,22 @@ bot.on("ready", async () => {
                         name: "closed",
                         value: "closed"
                     },
+                    {
+                        name: "high staff",
+                        value: "high staff"
+                    },
+                    {
+                        name: "important",
+                        value: "important"
+                    },
+                    {
+                        name: "bug",
+                        value: "bug"
+                    },
+                    {
+                        name: "event",
+                        value: "event"
+                    },
                 ],
               },
             ],
@@ -181,32 +197,102 @@ bot.on("ready", async () => {
                 const channel = await bot.channels.fetch(interaction.channel_id)
                 const guild = await bot.guilds.fetch(interaction.guild_id)
                 const role = guild.roles.cache.find(role => role.name === 'Staff')
+                const hsrole = guild.roles.cache.find(role => role.name === 'High Staff')
+                const dsrole = guild.roles.cache.find(role => role.name === 'Discord Staff')
                 const checkrole = await role.members.find(m=>m.user.id === interaction.member.user.id)
                 if(!checkrole){return}
                 const cat = args.find(arg => arg.name.toLowerCase() == 'category').value;
                     if(cat === "t" || cat === "tickets"){
+                        if(bot.channels.resolve(interaction.channel_id).parentID == '779816518585417728'){
+                            bot.channels.resolve(interaction.channel_id).updateOverwrite(role, { VIEW_CHANNEL: true });
+                            bot.channels.resolve(interaction.channel_id).updateOverwrite(hsrole, { VIEW_CHANNEL: true });
+                            console.log("#" + channel.name + " has been opened to staff.")
+                          }
                     bot.channels.resolve(interaction.channel_id).setParent("606680422600146955", {lockPermissions: false})
                     }else if (cat === "sv" || cat === "survival"){
+                        if(bot.channels.resolve(interaction.channel_id).parentID == '779816518585417728'){
+                            bot.channels.resolve(interaction.channel_id).updateOverwrite(role, { VIEW_CHANNEL: true });
+                            bot.channels.resolve(interaction.channel_id).updateOverwrite(hsrole, { VIEW_CHANNEL: true });
+                            console.log("#" + channel.name + " has been opened to staff.")
+                          }
                         bot.channels.resolve(interaction.channel_id).setParent("632946682207928321", {lockPermissions: false})
                         }else if (cat === "sb" || cat === "skyblocks"){
+                            if(bot.channels.resolve(interaction.channel_id).parentID == '779816518585417728'){
+                                bot.channels.resolve(interaction.channel_id).updateOverwrite(role, { VIEW_CHANNEL: true });
+                                bot.channels.resolve(interaction.channel_id).updateOverwrite(hsrole, { VIEW_CHANNEL: true });
+                                console.log("#" + channel.name + " has been opened to staff.")
+                              }
                             bot.channels.resolve(interaction.channel_id).setParent("632946712805244948", {lockPermissions: false})
                             }else if (cat === "fac" || cat === "factions"){
+                                if(bot.channels.resolve(interaction.channel_id).parentID == '779816518585417728'){
+                                    bot.channels.resolve(interaction.channel_id).updateOverwrite(role, { VIEW_CHANNEL: true });
+                                    bot.channels.resolve(interaction.channel_id).updateOverwrite(hsrole, { VIEW_CHANNEL: true });
+                                    console.log("#" + channel.name + " has been opened to staff.")
+                                  }
                               bot.channels.resolve(interaction.channel_id).setParent("659020993553104896", {lockPermissions: false})
                               }else if (cat === "svsv" || cat === "svanilla"){
+                                if(bot.channels.resolve(interaction.channel_id).parentID == '779816518585417728'){
+                                    bot.channels.resolve(interaction.channel_id).updateOverwrite(role, { VIEW_CHANNEL: true });
+                                    bot.channels.resolve(interaction.channel_id).updateOverwrite(hsrole, { VIEW_CHANNEL: true });
+                                    console.log("#" + channel.name + " has been opened to staff.")
+                                  }
                                 bot.channels.resolve(interaction.channel_id).setParent("667988805059346435", {lockPermissions: false})
                                 }else if (cat === "pr" || cat === "prison"){
+                                    if(bot.channels.resolve(interaction.channel_id).parentID == '779816518585417728'){
+                                        bot.channels.resolve(interaction.channel_id).updateOverwrite(role, { VIEW_CHANNEL: true });
+                                        bot.channels.resolve(interaction.channel_id).updateOverwrite(hsrole, { VIEW_CHANNEL: true });
+                                        console.log("#" + channel.name + " has been opened to staff.")
+                                      }
                                   bot.channels.resolve(interaction.channel_id).setParent("632946839792123948", {lockPermissions: false})
                                   }else if (cat === "cr" || cat === "creative"){
+                                    if(bot.channels.resolve(interaction.channel_id).parentID == '779816518585417728'){
+                                        bot.channels.resolve(interaction.channel_id).updateOverwrite(role, { VIEW_CHANNEL: true });
+                                        bot.channels.resolve(interaction.channel_id).updateOverwrite(hsrole, { VIEW_CHANNEL: true });
+                                        console.log("#" + channel.name + " has been opened to staff.")
+                                      }
                                     bot.channels.resolve(interaction.channel_id).setParent("632946812092678154", {lockPermissions: false})
                                     }else if (cat === "mg" || cat === "minigames"){
+                                        if(bot.channels.resolve(interaction.channel_id).parentID == '779816518585417728'){
+                                            bot.channels.resolve(interaction.channel_id).updateOverwrite(role, { VIEW_CHANNEL: true });
+                                            bot.channels.resolve(interaction.channel_id).updateOverwrite(hsrole, { VIEW_CHANNEL: true });
+                                            console.log("#" + channel.name + " has been opened to staff.")
+                                          }
                                       bot.channels.resolve(interaction.channel_id).setParent("664805277991960586", {lockPermissions: false})
                                       }else if (cat === "cb" || cat === "caveblocks"){
+                                        if(bot.channels.resolve(interaction.channel_id).parentID == '779816518585417728'){
+                                            bot.channels.resolve(interaction.channel_id).updateOverwrite(role, { VIEW_CHANNEL: true });
+                                            bot.channels.resolve(interaction.channel_id).updateOverwrite(hsrole, { VIEW_CHANNEL: true });
+                                            console.log("#" + channel.name + " has been opened to staff.")
+                                          }
                                         bot.channels.resolve(interaction.channel_id).setParent("786399045081890858", {lockPermissions: false})
                                         }else if (cat === "dc" || cat === "discord"){
+                                            if(bot.channels.resolve(interaction.channel_id).parentID == '779816518585417728'){
+                                                bot.channels.resolve(interaction.channel_id).updateOverwrite(role, { VIEW_CHANNEL: true });
+                                                bot.channels.resolve(interaction.channel_id).updateOverwrite(hsrole, { VIEW_CHANNEL: true });
+                                                console.log("#" + channel.name + " has been opened to staff.")
+                                              }
                                           bot.channels.resolve(interaction.channel_id).setParent("786464294732562472", {lockPermissions: false})
                                           }else if (cat === "c" || cat === "closed"){
+                                            if(bot.channels.resolve(interaction.channel_id).parentID == '779816518585417728'){
+                                                bot.channels.resolve(interaction.channel_id).updateOverwrite(role, { VIEW_CHANNEL: true });
+                                                bot.channels.resolve(interaction.channel_id).updateOverwrite(hsrole, { VIEW_CHANNEL: true });
+                                                console.log("#" + channel.name + " has been opened to staff.")
+                                              }
                                             bot.channels.resolve(interaction.channel_id).setParent("721049582070398994", {lockPermissions: false})
-                                            }
+                                            }else if (cat === "hs" || cat === "high staff"){
+                                                const checkrole1 = await hsrole.members.find(m=>m.user.id === interaction.member.user.id)
+                                                if(!checkrole1) return;
+                                                bot.channels.resolve(interaction.channel_id).updateOverwrite(role, { VIEW_CHANNEL: false });
+                                                bot.channels.resolve(interaction.channel_id).updateOverwrite(dsrole, { VIEW_CHANNEL: false });
+                                                console.log("#" + channel.name + " has been restricted to high staff.")
+                                                bot.channels.resolve(interaction.channel_id).setParent("779816518585417728", {lockPermissions: false})
+                                                }else if (cat === "impt" || cat === "important"){
+                                                    bot.channels.resolve(interaction.channel_id).setParent("632947151927771167", {lockPermissions: false})
+                                                    }else if (cat === "bug"){
+                                                        bot.channels.resolve(interaction.channel_id).setParent("608258579757137940", {lockPermissions: false})
+                                                        }else if (cat === "ev" || cat === "event"){
+                                                            bot.channels.resolve(interaction.channel_id).setParent("751497803837997107", {lockPermissions: false})
+                                                            }
                     const embed = new Discord.MessageEmbed()
                     const userobject = await bot.users.fetch(interaction.member.user.id)
                     embed.setAuthor(interaction.member.user.username, userobject.avatarURL())
