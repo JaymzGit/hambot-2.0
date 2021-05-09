@@ -8,8 +8,8 @@ const bot = new Discord.Client({disableEveryone: true});
 const interactions = require("discord-slash-commands-client");
 bot.commands = new Discord.Collection();
 
-const guildId = '380308776114454528';
-const guildID = '380308776114454528';
+const guildId = 'insert guild ID here';
+const guildID = 'insert guild ID here';
 const staff = '';
 const lp = '';
 const alerts ='';
@@ -51,7 +51,7 @@ bot.on("ready", async () => {
 	console.log(`\n${bot.user.username} is online!`);
   const client = new interactions.Client(
       tokenfile.token,
-      "650295824152133662"
+      "token"
     );
     bot.user.setActivity('over Ham5teak', { type: 'WATCHING' });
     console.log(bot.api.applications(bot.user.id).commands.get())
@@ -185,27 +185,27 @@ bot.on("ready", async () => {
                 if(!checkrole){return}
                 const cat = args.find(arg => arg.name.toLowerCase() == 'category').value;
                     if(cat === "t" || cat === "tickets"){
-                    bot.channels.resolve(interaction.channel_id).setParent("606680422600146955", {lockPermissions: false})
+                    bot.channels.resolve(interaction.channel_id).setParent("categoryid", {lockPermissions: false})
                     }else if (cat === "sv" || cat === "survival"){
-                        bot.channels.resolve(interaction.channel_id).setParent("632946682207928321", {lockPermissions: false})
+                        bot.channels.resolve(interaction.channel_id).setParent("categoryid", {lockPermissions: false})
                         }else if (cat === "sb" || cat === "skyblocks"){
-                            bot.channels.resolve(interaction.channel_id).setParent("632946712805244948", {lockPermissions: false})
+                            bot.channels.resolve(interaction.channel_id).setParent("categoryid", {lockPermissions: false})
                             }else if (cat === "fac" || cat === "factions"){
-                              bot.channels.resolve(interaction.channel_id).setParent("659020993553104896", {lockPermissions: false})
+                              bot.channels.resolve(interaction.channel_id).setParent("categoryid", {lockPermissions: false})
                               }else if (cat === "svsv" || cat === "svanilla"){
-                                bot.channels.resolve(interaction.channel_id).setParent("667988805059346435", {lockPermissions: false})
+                                bot.channels.resolve(interaction.channel_id).setParent("categoryid", {lockPermissions: false})
                                 }else if (cat === "pr" || cat === "prison"){
-                                  bot.channels.resolve(interaction.channel_id).setParent("632946839792123948", {lockPermissions: false})
+                                  bot.channels.resolve(interaction.channel_id).setParent("categoryid", {lockPermissions: false})
                                   }else if (cat === "cr" || cat === "creative"){
-                                    bot.channels.resolve(interaction.channel_id).setParent("632946812092678154", {lockPermissions: false})
+                                    bot.channels.resolve(interaction.channel_id).setParent("categoryid", {lockPermissions: false})
                                     }else if (cat === "mg" || cat === "minigames"){
-                                      bot.channels.resolve(interaction.channel_id).setParent("664805277991960586", {lockPermissions: false})
+                                      bot.channels.resolve(interaction.channel_id).setParent("categoryid", {lockPermissions: false})
                                       }else if (cat === "cb" || cat === "caveblocks"){
-                                        bot.channels.resolve(interaction.channel_id).setParent("786399045081890858", {lockPermissions: false})
+                                        bot.channels.resolve(interaction.channel_id).setParent("categoryid", {lockPermissions: false})
                                         }else if (cat === "dc" || cat === "discord"){
-                                          bot.channels.resolve(interaction.channel_id).setParent("786464294732562472", {lockPermissions: false})
+                                          bot.channels.resolve(interaction.channel_id).setParent("categoryid", {lockPermissions: false})
                                           }else if (cat === "c" || cat === "closed"){
-                                            bot.channels.resolve(interaction.channel_id).setParent("721049582070398994", {lockPermissions: false})
+                                            bot.channels.resolve(interaction.channel_id).setParent("categoryid", {lockPermissions: false})
                                             }
                     const embed = new Discord.MessageEmbed()
                     const userobject = await bot.users.fetch(interaction.member.user.id)
