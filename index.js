@@ -8,8 +8,8 @@ const bot = new Discord.Client({disableEveryone: true});
 const interactions = require("discord-slash-commands-client");
 bot.commands = new Discord.Collection();
 
-const guildId = '380308776114454528';
-const guildID = '380308776114454528';
+const guildId = 'insert guild ID here';
+const guildID = 'insert guild ID here';
 const staff = '';
 const lp = '';
 const alerts ='';
@@ -51,7 +51,7 @@ bot.on("ready", async () => {
 	console.log(`\n${bot.user.username} is online!`);
   const client = new interactions.Client(
       tokenfile.token,
-      "650295824152133662"
+      "bot id"
     );
     bot.user.setActivity('over Ham5teak', { type: 'WATCHING' });
     console.log(bot.api.applications(bot.user.id).commands.get())
