@@ -298,7 +298,16 @@ bot.on("ready", async () => {
                     embed.setAuthor(interaction.member.user.username, userobject.avatarURL())
                     embed.setColor('#00FFFF')
                     embed.setDescription('#' + channel.name + ' has been moved to '+ cat + ' category.')
-                    reply(interaction, embed)
+                    await bot.api.interactions(interaction.id, interaction.token).callback.post({
+                        data: {
+                        type: 4,
+                        data: {
+                          flags: 64,
+                          content: " ",
+                          embeds: [embed]
+                        },
+                      }
+                }).catch(console.error);
                     console.log(interaction.member.user.username + " has moved #" + channel.name + " to " + cat)
               }else if (command === 'edit'){
                 const guild = await bot.guilds.fetch(interaction.guild_id)
@@ -317,10 +326,25 @@ bot.on("ready", async () => {
                       if(fetchedMsg.author.bot){
                       const embed1 = new Discord.MessageEmbed()
                       embed1.setAuthor(interaction.member.user.username, userobject.avatarURL())
-                      embed1.setColor('#00FFFF')
+                      embed1.setColor(userobject.displayHexColor)
                       embed1.setDescription(content)
                       embed1.setFooter('Ham5teak Bot 2.0 | play.ham5teak.xyz | Made by Jaymz#7815')
                       fetchedMsg.edit(embed1);
+                      const embed = new Discord.MessageEmbed()
+                        const userobject = await bot.users.fetch(interaction.member.user.id)
+                        embed.setAuthor(interaction.member.user.username, userobject.avatarURL())
+                        embed.setColor(userobject.displayHexColor)
+                        embed.setDescription(id + ' has been edited.')
+                      bot.api.interactions(interaction.id, interaction.token).callback.post({
+                        data: {
+                        type: 4,
+                        data: {
+                          flags: 64,
+                          content: " ",
+                          embeds: [embed]
+                        },
+                      }
+                }).catch(console.error);
                       }else {return}
                       })
                         .catch(console.error);   
