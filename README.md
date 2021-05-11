@@ -1,4 +1,4 @@
-# hambot
+# hambot 2.0
 Please do not distribute this code or copy it without my permission.
 
 This bot was orginally designed specifically for Ham5teak Discord Server 
