@@ -5,6 +5,7 @@ This bot was orginally designed specifically for Ham5teak Discord Server and is 
 
 (**Ham5teak**) : https://discord.gg/6mn49CtPfP
 Ham5teak IP Address : play.ham5teak.xyz
+
 This bot uses Javascript (JS) with the node module Discord.js
 
 **Features** :
